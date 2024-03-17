@@ -1,0 +1,11 @@
+package se.fit.UserRedis.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+
+public class RedisConfig {
+	@Bean
+	public LettuceConnectionFactory redisConnectionFactory() {
+		return new LettuceConnectionFactory();
+	}
+}

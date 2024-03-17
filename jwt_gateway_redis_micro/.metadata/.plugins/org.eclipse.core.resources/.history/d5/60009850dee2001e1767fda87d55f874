@@ -1,0 +1,5 @@
+package se.fit.UserRedis.ServiceRedis;
+
+public class UserServiceRedisApplication {
+
+}

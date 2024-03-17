@@ -1,0 +1,22 @@
+package se.fit.UserRedis.reponsitory;
+
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
+
+import se.fit.UserRedis.entity.User;
+
+@Repository
+public class UserReponsitory {
+	private HashOperations hashOperations;
+	private RedisTemplate redisTemplate;
+	public UserReponsitory(HashOperations hashOperations, RedisTemplate redisTemplate) {
+		super();
+		this.hashOperations = hashOperations;
+		this.redisTemplate = redisTemplate;
+	}
+	
+	public void save(User user) {
+		hashOperations.put("User", user.getId(), user);
+	}
+}

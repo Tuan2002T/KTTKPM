@@ -1,0 +1,5 @@
+package se.fit.UserRedis.controller;
+
+public class UserController {
+
+}
