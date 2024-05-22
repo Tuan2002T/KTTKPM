@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  mysqldb1:
+    image: mysql:latest
+    restart: always
+    container_name: mysqldb1
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=bookDocker
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysqldb1_data:/var/lib/mysql
+    networks:
+      - appnet
+
+  mysqldb2:
+    image: mysql:latest
+    restart: always
+    container_name: mysqldb2
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=authorDocker
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysqldb2_data:/var/lib/mysql
+    networks:
+      - appnet
+
+  bookservice:
+    restart: always
+    build:
+      context: ./Book
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb1
+    environment:
+      MYSQL_HOST: mysqldb1
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: bookDocker
+    networks:
+      - appnet
+
+  authorservice:
+    restart: always
+    build:
+      context: ./Author
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysqldb2
+    environment:
+      MYSQL_HOST: mysqldb2
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: authorDocker
+    networks:
+      - appnet
+
+volumes:
+  mysqldb1_data:
+  mysqldb2_data:
+
+networks:
+  appnet:
